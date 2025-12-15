@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>초보자용 차트 페이지</title>
+
+  <!-- 차트 라이브러리 (인터넷에서 불러옴) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 사용자 추이 차트</h1>
+
+  <div class="box">
+    <canvas id="myChart"></canvas>
+
+    <div style="margin-top: 10px;">
+      <button onclick="resetZoom()">리셋</button>
+    </div>
+  </div>
+
+  <script>
+    // ✅ 1. JSON 데이터 (차트의 재료)
+    const data = [
+      { day: "01-01", users: 100 },
+      { day: "01-02", users: 120 },
+      { day: "01-03", users: 90 },
+      { day: "01-04", users: 140 },
+      { day: "01-05", users: 130 },
+      { day: "01-06", users: 160 }
+    ];
+
+    // ✅ 2. 차트에 필요한 값 분리
+    const labels = data.map(item => item.day);
+    const values = data.map(item => item.users);
+
+    // ✅ 3. 차트 생성
+    const ctx = document.getElementById("myChart");
+
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "사용자 수",
+          data: values,
+          borderColor: "blue",
+          backgroundColor: "rgba(0,0,255,0.1)"
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          zoom: {
+            zoom: {
+              wheel: {
+                enabled: true   // 마우스 휠 줌
+              },
+              pinch: {
+                enabled: true   // 터치 줌
+              },
+              mode: "x"
+            }
+          }
+        }
+      }
+    });
+
+    // ✅ 4. 리셋 버튼 기능
+    function resetZoom() {
+      chart.resetZoom();
+    }
+  </script>
+
+</body>
+</html>
